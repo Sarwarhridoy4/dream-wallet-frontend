@@ -6,6 +6,7 @@ import Contact from "@/pages/Contact/Contact";
 import FaqPage from "@/pages/FAQ/FaqPage";
 import Features from "@/pages/Features/Features";
 import Home from "@/pages/Home/Home";
+import NotFound from "@/pages/NotFound/NotFound";
 import UnAuthorised from "@/pages/UnAuthorised/UnAuthorised";
 import Verify from "@/pages/Verify/Verify";
 import { createBrowserRouter } from "react-router";
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
         path: "contact",
       },
     ],
+    errorElement: <NotFound />,
   },
 
   {
