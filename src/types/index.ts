@@ -88,3 +88,5 @@ export interface IVerifyOtp {
   phone: string;
   otp: string;
 }
+
+export type TRole = "ADMIN" | "AGENT" | "USER";
