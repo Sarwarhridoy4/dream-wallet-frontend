@@ -25,7 +25,7 @@ export const AboutSection = () => {
           className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-lg group"
         >
           <img
-            src="/image/rose-digital-wallet.png"
+            src="/image/wallet-illustration.jpg"
             alt="Digital Wallet Interface - Modern and secure financial technology"
             className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
             loading="lazy"
