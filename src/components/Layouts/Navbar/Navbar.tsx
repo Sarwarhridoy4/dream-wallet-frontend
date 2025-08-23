@@ -4,6 +4,7 @@ import {
   MailIcon,
   HelpCircleIcon,
   StarIcon,
+  LayoutDashboardIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,13 +35,16 @@ const navigationLinks = [
   { href: "/", label: "Home", icon: HomeIcon, active: true },
   { href: "/about", label: "About", icon: InfoIcon },
   { href: "/features", label: "Features", icon: StarIcon },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/faq", label: "FAQ", icon: HelpCircleIcon },
   { href: "/contact", label: "Contact", icon: MailIcon },
 ];
 
 export default function Navbar() {
+  const isAuthenticated = false; // Replace with your auth state
+
   return (
-    <header className='w-full border-b px-4 md:px-6'>
+    <header className='w-full border-b px-4 md:px-6 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-950/20 dark:to-pink-950/20'>
       <div className='flex h-16 items-center justify-between gap-4'>
         {/* Left side */}
         <div className='flex flex-1 items-center gap-2'>
@@ -48,9 +52,10 @@ export default function Navbar() {
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                className='group size-8 md:hidden'
+                className='group size-8 md:hidden hover:bg-rose-100 dark:hover:bg-rose-900/20'
                 variant='ghost'
                 size='icon'
+                aria-label='Open navigation menu'
               >
                 <svg
                   className='pointer-events-none'
@@ -79,7 +84,10 @@ export default function Navbar() {
                 </svg>
               </Button>
             </PopoverTrigger>
-            <PopoverContent align='start' className='w-36 p-1 md:hidden'>
+            <PopoverContent
+              align='start'
+              className='w-36 p-1 md:hidden border-rose-200 dark:border-rose-800'
+            >
               <NavigationMenu className='max-w-none *:w-full'>
                 <NavigationMenuList className='flex-col items-start gap-0 md:gap-2'>
                   {navigationLinks.map((link, index) => {
@@ -88,7 +96,7 @@ export default function Navbar() {
                       <NavigationMenuItem key={index} className='w-full'>
                         <Link
                           to={link.href}
-                          className='flex-row items-center gap-2 py-1.5'
+                          className='flex-row items-center gap-2 py-1.5 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-md px-2 transition-colors'
                         >
                           <Icon
                             size={16}
@@ -106,7 +114,10 @@ export default function Navbar() {
           </Popover>
           <div className='flex items-center gap-6'>
             {/* Logo */}
-            <Link to='/' className='text-primary hover:text-primary/90'>
+            <Link
+              to='/'
+              className='text-primary hover:text-primary/90 transition-colors'
+            >
               <Logo />
             </Link>
             {/* Desktop navigation - icon only */}
@@ -119,7 +130,7 @@ export default function Navbar() {
                         <TooltipTrigger asChild>
                           <Link
                             to={link.href}
-                            className='flex size-8 items-center justify-center p-1.5'
+                            className='flex size-8 items-center justify-center p-1.5 hover:bg-rose-100 dark:hover:bg-rose-900/20 rounded-md transition-colors'
                           >
                             <link.icon size={20} aria-hidden='true' />
                             <span className='sr-only'>{link.label}</span>
@@ -127,7 +138,7 @@ export default function Navbar() {
                         </TooltipTrigger>
                         <TooltipContent
                           side='bottom'
-                          className='px-2 py-1 text-xs'
+                          className='px-2 py-1 text-xs border-rose-200 dark:border-rose-800'
                         >
                           <p>{link.label}</p>
                         </TooltipContent>
@@ -144,8 +155,30 @@ export default function Navbar() {
           {/* Theme toggle */}
           <ModeToggle />
 
-          {/* User menu */}
-          <UserMenu />
+          {isAuthenticated ? (
+            <UserMenu />
+          ) : (
+            <div className='flex items-center gap-2'>
+              {/* Get Started Button */}
+              <Button
+                variant='outline'
+                size='sm'
+                className='hidden sm:inline-flex border-rose-200 text-rose-700 hover:bg-rose-50 hover:text-rose-800 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-900/20 dark:hover:text-rose-200 transition-colors'
+                asChild
+              >
+                <Link to='/get-started'>Get Started</Link>
+              </Button>
+
+              {/* Sign Up Button */}
+              <Button
+                size='sm'
+                className='bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105'
+                asChild
+              >
+                <Link to='/signup'>Sign Up</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </header>
