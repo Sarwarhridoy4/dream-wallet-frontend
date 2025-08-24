@@ -37,17 +37,16 @@ import { ModeToggle } from "@/components/theme-toggle";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Navigation links with icons for desktop icon-only navigation
-const navigationLinks = [
-  { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/about", label: "About", icon: InfoIcon },
-  { href: "/features", label: "Features", icon: StarIcon },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
-  { href: "/faq", label: "FAQ", icon: HelpCircleIcon },
-  { href: "/contact", label: "Contact", icon: MailIcon },
-];
-
 export default function Navbar() {
+  // Navigation links with icons for desktop icon-only navigation
+  const navigationLinks = [
+    { href: "/", label: "Home", icon: HomeIcon },
+    { href: "/about", label: "About", icon: InfoIcon },
+    { href: "/features", label: "Features", icon: StarIcon },
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
+    { href: "/faq", label: "FAQ", icon: HelpCircleIcon },
+    { href: "/contact", label: "Contact", icon: MailIcon },
+  ];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isAuthenticated = false; // Replace with your auth state

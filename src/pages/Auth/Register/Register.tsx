@@ -45,6 +45,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 
 const registerSchema = z.object({
   name: z
@@ -98,25 +99,11 @@ const registerSchema = z.object({
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-interface RegisterFormProps {
-  onModeChange?: (mode: "login") => void;
-  useRegisterMutation?: () => [
-    (data: FormData) => Promise<any>,
-    { isLoading: boolean; isSuccess: boolean; isError: boolean; error?: any }
-  ];
-}
-
-export function Register({
-  onModeChange,
-  useRegisterMutation,
-}: RegisterFormProps) {
+export function Register() {
   const [
     registerUser,
     { isLoading: isRegistering, isSuccess, isError, error },
-  ] = useRegisterMutation?.() || [
-    null,
-    { isLoading: false, isSuccess: false, isError: false, error: null },
-  ];
+  ] = useRegisterMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [identifierPreview, setIdentifierPreview] = useState<string | null>(
@@ -236,8 +223,6 @@ export function Register({
             ? "Agent account created! Your account is pending approval."
             : "Account created successfully! Please log in."
         );
-
-        onModeChange?.("login");
       } else {
         // Fallback simulation for development
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -247,8 +232,6 @@ export function Register({
             ? "Agent account created! Your account is pending approval."
             : "Account created successfully! Please log in."
         );
-
-        onModeChange?.("login");
       }
     } catch (error: any) {
       console.error("[v0] Registration error:", error);
@@ -277,18 +260,20 @@ export function Register({
           Registration Successful!
         </h2>
         <p className='text-muted-foreground mb-6'>
-          Your account has been created successfully. You can now sign in.
+          Your account has been created successfully. You will be redirected to
+          login in <span className='font-semibold'>5 seconds</span>.
         </p>
+
+        {/* Manual button to login */}
         <Button
-          onClick={() => onModeChange?.("login")}
+          asChild
           className='bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700'
         >
-          Continue to Sign In
+          <Link to='/login'>Continue to Sign In</Link>
         </Button>
       </motion.div>
     );
   }
-
   return (
     <div className='w-full max-w-lg mx-auto px-4 sm:px-0'>
       <motion.div

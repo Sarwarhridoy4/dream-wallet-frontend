@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router"
 import { useMobile } from "@/hooks/use-mobile"
-import { DashboardSidebar } from "@/components/dashboard-sidebar"
-import { DashboardHeader } from "@/components/dashboard-header"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
+import { DashboardSidebar } from "./dashboard-sidebar"
+import { DashboardHeader } from "./dashboard-header"
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
