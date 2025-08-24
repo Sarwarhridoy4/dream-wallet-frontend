@@ -1,7 +1,9 @@
 import App from "@/App";
 import About from "@/pages/About/About";
+import ForgotPassword from "@/pages/Auth/ForgotPassword/ForgotPassword";
 import { Login } from "@/pages/Auth/Login/Login";
 import { Register } from "@/pages/Auth/Register/Register";
+import ResetPassword from "@/pages/Auth/ResetPassword/ResetPassword";
 import Contact from "@/pages/Contact/Contact";
 import FaqPage from "@/pages/FAQ/FaqPage";
 import Features from "@/pages/Features/Features";
@@ -52,6 +54,19 @@ export const router = createBrowserRouter([
       {
         Component: UnAuthorised,
         path: "/unauthorized",
+      },
+      {
+        path: "forgot-password",
+        Component: ForgotPassword,
+      },
+      {
+        path: "reset-password",
+        Component: ResetPassword,
+      },
+
+      {
+        path: "*",
+        Component: NotFound,
       },
     ],
     errorElement: <NotFound />,
