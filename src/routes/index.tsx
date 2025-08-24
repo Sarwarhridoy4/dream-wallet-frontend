@@ -1,7 +1,7 @@
 import App from "@/App";
 import About from "@/pages/About/About";
-import Login from "@/pages/Auth/Login/Login";
-import Register from "@/pages/Auth/Register/Register";
+import { Login } from "@/pages/Auth/Login/Login";
+import { Register } from "@/pages/Auth/Register/Register";
 import Contact from "@/pages/Contact/Contact";
 import FaqPage from "@/pages/FAQ/FaqPage";
 import Features from "@/pages/Features/Features";
@@ -36,21 +36,24 @@ export const router = createBrowserRouter([
         Component: Contact,
         path: "contact",
       },
+      {
+        path: "dashboard",
+        Component: UnAuthorised,
+      },
+      {
+        Component: Login,
+        path: "/login",
+      },
+      {
+        Component: Register,
+        path: "/signup",
+      },
+
+      {
+        Component: UnAuthorised,
+        path: "/unauthorized",
+      },
     ],
     errorElement: <NotFound />,
-  },
-
-  {
-    Component: Login,
-    path: "/login",
-  },
-  {
-    Component: Register,
-    path: "/register",
-  },
-
-  {
-    Component: UnAuthorised,
-    path: "/unauthorized",
   },
 ]);
