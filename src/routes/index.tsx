@@ -1,4 +1,5 @@
 import App from "@/App";
+import { DashboardLayout } from "@/LayOuts/Dashboard";
 import About from "@/pages/About/About";
 import ForgotPassword from "@/pages/Auth/ForgotPassword/ForgotPassword";
 import { Login } from "@/pages/Auth/Login/Login";
@@ -40,7 +41,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        Component: UnAuthorised,
+        Component: DashboardLayout,
       },
       {
         Component: Login,
