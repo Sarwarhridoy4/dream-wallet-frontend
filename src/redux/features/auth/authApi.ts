@@ -1,12 +1,7 @@
-// src/redux/features/auth/authApi.ts
 import { baseApi } from "@/redux/baseApi";
-
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // -------------------
-    // LOGIN
-    // -------------------
     login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/login",
@@ -16,9 +11,6 @@ export const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["USER"],
     }),
 
-    // -------------------
-    // LOGOUT
-    // -------------------
     logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -27,31 +19,6 @@ export const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["USER"],
     }),
 
-    // -------------------
-    // REGISTER (User / Agent)
-    // -------------------
-    register: builder.mutation({
-      query: (userInfo) => {
-        const formData = new FormData();
-        Object.entries(userInfo).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            // convert File and string automatically
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            formData.append(key, value as any);
-          }
-        });
-        return {
-          url: "/auth/register",
-          method: "POST",
-          data: formData,
-          headers: { "Content-Type": "multipart/form-data" },
-        };
-      },
-    }),
-
-    // -------------------
-    // REFRESH TOKEN
-    // -------------------
     refreshToken: builder.mutation({
       query: () => ({
         url: "/auth/refresh-token",
@@ -60,21 +27,14 @@ export const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["USER"],
     }),
 
-    // -------------------
-    // FORGOT PASSWORD
-    // -------------------
     forgotPassword: builder.mutation({
       query: (data) => ({
         url: "/auth/forgot-password",
         method: "POST",
         data,
       }),
-      invalidatesTags: ["USER"], // Ensure tags are invalidated if necessary
     }),
 
-    // -------------------
-    // RESET PASSWORD
-    // -------------------
     resetPassword: builder.mutation({
       query: (data) => ({
         url: "/auth/reset-password",
@@ -83,15 +43,20 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // -------------------
-    // GET CURRENT USER INFO
-    // -------------------
-    getUserInfo: builder.query({
-      query: () => ({
-        url: "/user/me",
-        method: "GET",
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        data,
       }),
-      providesTags: ["USER"],
+    }),
+
+    setPassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/set-password",
+        method: "POST",
+        data,
+      }),
     }),
   }),
 });
@@ -99,9 +64,9 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useLogoutMutation,
-  useRegisterMutation,
   useRefreshTokenMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
-  useGetUserInfoQuery,
+  useChangePasswordMutation,
+  useSetPasswordMutation,
 } = authApi;
