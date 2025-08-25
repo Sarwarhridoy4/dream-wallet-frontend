@@ -1,3 +1,5 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +15,8 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import { Lock } from "lucide-react";
+import { useResetPasswordMutation } from "@/redux/features/auth/authApi"; // import your mutation
+import { useNavigate } from "react-router";
 
 const resetSchema = z.object({
   newPassword: z.string().min(8, "Password must be at least 8 characters"),
@@ -21,21 +25,26 @@ const resetSchema = z.object({
 type ResetFormData = z.infer<typeof resetSchema>;
 
 const ResetPassword = () => {
+  const navigation = useNavigate();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+
   const form = useForm<ResetFormData>({
     resolver: zodResolver(resetSchema),
     defaultValues: { newPassword: "" },
   });
 
   const onSubmit = async (data: ResetFormData) => {
-    console.log("Reset Password Data:", data);
-
     try {
-      // Simulate API call
-      await new Promise((res) => setTimeout(res, 1500));
+      await resetPassword(data).unwrap(); // call the API
       toast.success("Password Changed Successfully!");
-    } catch (err) {
+      // optionally redirect to login
+      navigation("/login");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(err);
-      toast.error("Failed to reset password");
+      const message = err?.data?.message || "Failed to reset password";
+      toast.error(message);
     }
   };
 
@@ -74,12 +83,8 @@ const ResetPassword = () => {
               )}
             />
 
-            <Button
-              type='submit'
-              className='w-full'
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Resetting..." : "Reset Password"}
+            <Button type='submit' className='w-full' disabled={isLoading}>
+              {isLoading ? "Resetting..." : "Reset Password"}
             </Button>
           </form>
         </Form>
