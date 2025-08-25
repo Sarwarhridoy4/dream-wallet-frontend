@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useNavigate } from "react-router"; // <-- import React Router hook
+import { useNavigate } from "react-router";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -17,8 +17,8 @@ import {
   ArrowDownCircle,
   Settings,
 } from "lucide-react";
-import { useRole } from "@/hooks/use-role";
-import { useNavigation } from "@/hooks/use-navigation";
+import { useState } from "react";
+import { useGetUserInfoQuery } from "@/redux/features/user/userApi";
 
 interface NavItem {
   title: string;
@@ -72,15 +72,18 @@ interface DashboardSidebarProps {
 }
 
 export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
-  const { currentPage, setCurrentPage } = useNavigation();
-  const { currentUser } = useRole();
-  const menuItems = roleMenus[currentUser.role] || [];
+  const { data } = useGetUserInfoQuery(undefined);
 
-  const navigate = useNavigate(); // React Router's navigation function
+  const user = data?.data;
+  console.log("user in sidebar:", user);
+  const navigate = useNavigate();
+  const currentRole = user?.role || "USER";
+  const menuItems = roleMenus[currentRole.toUpperCase()] || [];
+  const [currentPage, setCurrentPage] = useState(menuItems[0]?.href || "");
 
   const handleNavigation = (href: string) => {
-    setCurrentPage(href); // update local context state
-    navigate(href); // navigate to the route
+    setCurrentPage(href);
+    navigate(href);
     onNavigate?.();
   };
 
@@ -92,23 +95,31 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
       </div>
 
       {/* User Info */}
-      <div className='p-4'>
-        <div className='flex items-center space-x-3'>
-          <div className='h-8 w-8 rounded-full bg-sidebar-primary flex items-center justify-center'>
-            <span className='text-sm font-medium text-sidebar-primary-foreground'>
-              {currentUser.name.charAt(0)}
-            </span>
-          </div>
-          <div>
-            <p className='text-sm font-medium text-sidebar-foreground'>
-              {currentUser.name}
-            </p>
-            <p className='text-xs text-sidebar-foreground/60'>
-              {currentUser.role}
-            </p>
+      {user && (
+        <div className='p-4'>
+          <div className='flex items-center space-x-3'>
+            <div className='h-8 w-8 rounded-full bg-sidebar-primary flex items-center justify-center overflow-hidden'>
+              {user.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  alt={user.name}
+                  className='h-full w-full object-cover'
+                />
+              ) : (
+                <span className='text-sm font-medium text-sidebar-primary-foreground'>
+                  {user.name?.[0] || user.role?.[0]}
+                </span>
+              )}
+            </div>
+            <div>
+              <p className='text-sm font-medium text-sidebar-foreground'>
+                {user.name}
+              </p>
+              <p className='text-xs text-sidebar-foreground/60'>{user.role}</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <Separator className='bg-sidebar-border' />
 

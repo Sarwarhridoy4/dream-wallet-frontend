@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -28,29 +27,22 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "react-router";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import type { SerializedError } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router";
 
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
+  email: z.email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-interface LoginFormProps {
-  onModeChange?: (mode: "register") => void;
-  useLoginMutation?: () => [
-    (data: LoginFormData) => Promise<any>,
-    { isLoading: boolean; isSuccess: boolean; isError: boolean; error?: any }
-  ];
-}
-
-export function Login({ useLoginMutation }: LoginFormProps) {
+export function Login() {
+  const navigate = useNavigate();
   const [loginUser, { isLoading: isLoggingIn, isSuccess, isError, error }] =
-    useLoginMutation?.() || [
-      null,
-      { isLoading: false, isSuccess: false, isError: false, error: null },
-    ];
+    useLoginMutation();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -59,20 +51,29 @@ export function Login({ useLoginMutation }: LoginFormProps) {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    console.log("User logged in:", data);
-    try {
-      if (loginUser) {
-        await loginUser(data);
+  // 🔹 Type guards for error handling
+  const isFetchError = (err: unknown): err is FetchBaseQueryError =>
+    typeof err === "object" && err != null && "status" in err;
 
-        toast.success("Login successful!");
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        toast.success("Login simulated successfully!");
-      }
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err?.message || "Login failed. Please try again.");
+  const isSerialized = (err: unknown): err is SerializedError =>
+    typeof err === "object" && err != null && "message" in err;
+
+  const getErrorMessage = (err: unknown) => {
+    if (isFetchError(err))
+      return (err.data as { message?: string })?.message ?? "Server error";
+    if (isSerialized(err)) return err.message ?? "Unknown error";
+    return "Something went wrong";
+  };
+
+  const onSubmit = async (data: LoginFormData) => {
+    console.log("Login data:", data);
+    try {
+      await loginUser(data).unwrap();
+      toast.success("Login successful!");
+      navigate("/"); // redirect after success
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error(getErrorMessage(err));
     }
   };
 
@@ -129,8 +130,7 @@ export function Login({ useLoginMutation }: LoginFormProps) {
               <span className='text-sm font-medium'>Login failed</span>
             </div>
             <p className='text-sm text-red-600 dark:text-red-400 mt-1'>
-              {error?.data?.message ||
-                "Please check your credentials and try again."}
+              {getErrorMessage(error)}
             </p>
           </motion.div>
         )}
@@ -144,6 +144,7 @@ export function Login({ useLoginMutation }: LoginFormProps) {
               className='space-y-6'
               noValidate
             >
+              {/* Email field */}
               <FormField
                 control={form.control}
                 name='email'
@@ -158,7 +159,7 @@ export function Login({ useLoginMutation }: LoginFormProps) {
                           {...field}
                           type='email'
                           placeholder='jane@example.com'
-                          className='h-12 pl-4 pr-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all duration-200 group-hover:border-gray-300 dark:group-hover:border-gray-600'
+                          autoFocus
                         />
                         {field.value && !form.formState.errors.email && (
                           <CheckCircle2 className='absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-green-500' />
@@ -170,6 +171,7 @@ export function Login({ useLoginMutation }: LoginFormProps) {
                 )}
               />
 
+              {/* Password field */}
               <FormField
                 control={form.control}
                 name='password'
@@ -184,54 +186,31 @@ export function Login({ useLoginMutation }: LoginFormProps) {
                           {...field}
                           type={showPassword ? "text" : "password"}
                           placeholder='••••••••'
-                          className='h-12 pl-4 pr-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all duration-200 group-hover:border-gray-300 dark:group-hover:border-gray-600'
                         />
                         <Button
                           type='button'
                           variant='ghost'
                           size='sm'
-                          className='absolute right-0 top-0 h-12 px-3 py-2 hover:bg-transparent'
+                          className='absolute right-0 top-0 h-12 px-3 py-2'
                           onClick={() => setShowPassword(!showPassword)}
-                          aria-label={
-                            showPassword ? "Hide password" : "Show password"
-                          }
                         >
-                          {showPassword ? (
-                            <EyeOff className='h-4 w-4 text-gray-400' />
-                          ) : (
-                            <Eye className='h-4 w-4 text-gray-400' />
-                          )}
+                          {showPassword ? <EyeOff /> : <Eye />}
                         </Button>
                       </div>
                     </FormControl>
-                    <p className='text-sm text-gray-600 dark:text-gray-400'>
-                      Forgot Password ?{" "}
-                      <Link
-                        to={"/forgot-password"}
-                        className='text-rose-600 hover:underline font-medium'
-                      >
-                        <Button
-                          variant='link'
-                          className='p-0 h-auto text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 font-semibold'
-                        >
-                          Reset here
-                        </Button>
-                      </Link>
-                    </p>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Submit */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
                   type='submit'
-                  className='w-full h-12 bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600 hover:from-rose-700 hover:via-rose-600 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed'
+                  className='w-full h-12'
                   disabled={isLoggingIn}
                 >
                   {isLoggingIn ? (
@@ -246,24 +225,6 @@ export function Login({ useLoginMutation }: LoginFormProps) {
                     </>
                   )}
                 </Button>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className='text-center pt-4'
-              >
-                <p className='text-sm text-gray-600 dark:text-gray-400'>
-                  Don't have an account?{" "}
-                  <Link to='/signup' className='text-rose-600 hover:underline'>
-                    <Button
-                      variant='link'
-                      className='p-0 h-auto text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 font-semibold'
-                    >
-                      Register here
-                    </Button>
-                  </Link>
-                </p>
               </motion.div>
             </form>
           </Form>

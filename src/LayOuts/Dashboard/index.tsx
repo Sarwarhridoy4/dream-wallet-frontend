@@ -14,7 +14,7 @@ export function DashboardLayout() {
   const isMobile = useMobile();
 
   return (
-    <div className='flex h-screen bg-background'>
+    <div className='flex min-h-screen bg-background overflow-hidden'>
       {/* Desktop Sidebar */}
       {!isMobile && (
         <div className='w-64 border-r border-sidebar-border bg-sidebar'>
@@ -41,11 +41,12 @@ export function DashboardLayout() {
       )}
 
       {/* Main Content */}
-
       <div className='flex-1 flex flex-col overflow-hidden'>
         <DashboardHeader />
-        <main className='flex-1 overflow-y-auto p-6'>
-          <Outlet />
+        <main className='flex-1 overflow-y-auto'>
+          <div className='p-2'>
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
