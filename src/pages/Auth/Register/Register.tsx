@@ -46,6 +46,7 @@ import {
 import { toast } from "sonner";
 import { Link } from "react-router";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import type { ApiError } from "@/interfaces";
 
 const registerSchema = z.object({
   name: z
@@ -274,6 +275,7 @@ export function Register() {
       </motion.div>
     );
   }
+  const apiError = error as ApiError;
   return (
     <div className='w-full max-w-lg mx-auto px-4 sm:px-0'>
       <motion.div
@@ -315,7 +317,7 @@ export function Register() {
               <span className='text-sm font-medium'>Registration failed</span>
             </div>
             <p className='text-sm text-red-600 dark:text-red-400 mt-1'>
-              {error?.data?.message ||
+              {apiError?.data?.message ||
                 "Please check your information and try again."}
             </p>
           </motion.div>
@@ -429,7 +431,7 @@ export function Register() {
                         <div className='relative group'>
                           <Input
                             {...field}
-                            placeholder='+8801XXXXXXXXX'
+                            placeholder='01XXXXXXXXX'
                             className='h-12 pl-4 pr-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all duration-200 group-hover:border-gray-300 dark:group-hover:border-gray-600'
                             autoComplete='tel'
                           />
@@ -439,7 +441,7 @@ export function Register() {
                         </div>
                       </FormControl>
                       <p className='text-xs text-muted-foreground mt-1'>
-                        Use format +8801XXXXXXXXX or 01XXXXXXXXX
+                        Use format 01XXXXXXXXX
                       </p>
                       <FormMessage />
                     </FormItem>

@@ -30,7 +30,7 @@ import { toast } from "sonner";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import type { SerializedError } from "@reduxjs/toolkit";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email"),
@@ -225,6 +225,36 @@ export function Login() {
                     </>
                   )}
                 </Button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.0 }}
+                className='text-center pt-4'
+              >
+                <p className='text-sm text-gray-600 dark:text-gray-400'>
+                  New Here?{" "}
+                  <Link
+                    to={"/signup"}
+                    className='text-rose-600 hover:underline font-medium'
+                  >
+                    <Button
+                      variant='link'
+                      className='p-0 h-auto text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 font-semibold'
+                    >
+                      Sign in here
+                    </Button>
+                  </Link>
+                </p>
+                <p className='text-sm text-gray-600 dark:text-gray-400'>
+                  Forgot Password{" "}
+                  <Link
+                    to={"/forgot-password"}
+                    className='text-rose-600 hover:underline font-medium'
+                  >
+                    Reset here
+                  </Link>
+                </p>
               </motion.div>
             </form>
           </Form>

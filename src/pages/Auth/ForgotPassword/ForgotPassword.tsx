@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import { Mail } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useForgotPasswordMutation } from "@/redux/features/auth/authApi";
+
 
 const forgotSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -22,23 +23,22 @@ const forgotSchema = z.object({
 type ForgotFormData = z.infer<typeof forgotSchema>;
 
 const ForgotPassword = () => {
-  const navigation = useNavigate();
   const form = useForm<ForgotFormData>({
     resolver: zodResolver(forgotSchema),
     defaultValues: { email: "" },
   });
 
-  const onSubmit = async (data: ForgotFormData) => {
-    console.log("Forgot Password Data:", data);
+  // RTK Query mutation
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
+  const onSubmit = async (data: ForgotFormData) => {
     try {
-      // Simulate API call
-      await new Promise((res) => setTimeout(res, 1500));
-      toast.success("Email Sent Successfully!");
-      navigation("/reset-password");
-    } catch (err) {
-      console.log(err);
-      toast.error("Failed to send reset email");
+      const res = await forgotPassword(data).unwrap();
+      toast.success(res.message || "Email Sent Successfully!");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.data?.message || "Failed to send reset email");
     }
   };
 
@@ -77,12 +77,8 @@ const ForgotPassword = () => {
               )}
             />
 
-            <Button
-              type='submit'
-              className='w-full'
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Sending..." : "Send Reset Link"}
+            <Button type='submit' className='w-full' disabled={isLoading}>
+              {isLoading ? "Sending..." : "Send Reset Link"}
             </Button>
           </form>
         </Form>
