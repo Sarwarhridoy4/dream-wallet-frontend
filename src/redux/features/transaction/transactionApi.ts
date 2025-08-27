@@ -7,7 +7,7 @@ export const transactionApi = baseApi.injectEndpoints({
         url: "/transaction/me",
         method: "GET",
       }),
-      providesTags: ["TRANSACTION"],
+      providesTags: ["TRANSACTION", "WALLET", "USER"],
     }),
 
     getAgentTransactions: builder.query({

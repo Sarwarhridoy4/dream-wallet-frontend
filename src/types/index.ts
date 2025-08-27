@@ -90,3 +90,23 @@ export interface IVerifyOtp {
 }
 
 export type TRole = "ADMIN" | "AGENT" | "USER";
+
+// src/types/api.ts
+
+// Generic API response wrapper
+export interface ApiResponse<T> {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+// src/types/stats.ts
+
+export interface UserStats {
+  balance: number;
+  totalReceived: number;
+  totalSent: number;
+  totalTransactions: number;
+  userId: string;
+}

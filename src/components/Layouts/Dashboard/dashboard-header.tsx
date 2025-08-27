@@ -5,13 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { useGetUserInfoQuery } from "@/redux/features/user/userApi";
 
 export function DashboardHeader() {
-    const { data } = useGetUserInfoQuery(undefined);
-  
-    const user = data?.data;
+  const { data } = useGetUserInfoQuery(undefined);
+
+  const user = data?.data;
   return (
     <header className='flex h-16 items-center justify-between border-b border-border bg-background px-6'>
       {/* Greeting */}
-      <div className='flex items-center space-x-4'>
+      <div className='hidden md:flex items-center space-x-4 '>
         <h2 className='text-lg font-semibold text-foreground'>
           Welcome back, {user?.name}
         </h2>

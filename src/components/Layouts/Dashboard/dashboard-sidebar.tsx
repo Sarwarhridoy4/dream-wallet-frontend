@@ -75,7 +75,6 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
   const { data } = useGetUserInfoQuery(undefined);
 
   const user = data?.data;
-  console.log("user in sidebar:", user);
   const navigate = useNavigate();
   const currentRole = user?.role || "USER";
   const menuItems = roleMenus[currentRole.toUpperCase()] || [];

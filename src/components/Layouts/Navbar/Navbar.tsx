@@ -41,8 +41,8 @@ import { useGetUserInfoQuery } from "@/redux/features/user/userApi";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
 
 export default function Navbar() {
-  const { data, isLoading } = useGetUserInfoQuery(undefined);
-  console.log("User Info:", { data, isLoading });
+  const { data } = useGetUserInfoQuery(undefined);
+  
   const [logout] = useLogoutMutation();
 
   const user = data?.data;

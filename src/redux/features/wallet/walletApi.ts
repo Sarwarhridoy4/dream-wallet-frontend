@@ -50,7 +50,7 @@ export const walletApi = baseApi.injectEndpoints({
         url: "/wallet",
         method: "GET",
       }),
-      providesTags: ["WALLET"],
+      providesTags: ["WALLET", "USER"],
     }),
 
     getAdminWalletStats: builder.query({
