@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowUpCircle, Search, DollarSign, User } from "lucide-react"
 
 export function AgentCashIn() {
+  
   const [customerSearch, setCustomerSearch] = useState("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null)

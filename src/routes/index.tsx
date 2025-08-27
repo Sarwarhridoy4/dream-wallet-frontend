@@ -22,7 +22,7 @@ import { AgentWallet } from "@/pages/dashboard/agent/agent-wallet";
 import { AgentCashIn } from "@/pages/dashboard/agent/agent-cash-in";
 import { AgentCashOut } from "@/pages/dashboard/agent/agent-cash-out";
 import { AgentProfile } from "@/pages/dashboard/agent/agent-profile";
-import { AgentTransactions } from "@/pages/dashboard/agent/agent-transactions";
+import AgentTransactions from "@/pages/dashboard/agent/agent-transactions";
 import { AdminStats } from "@/pages/dashboard/admin/admin-stats";
 import { AdminUsers } from "@/pages/dashboard/admin/admin-users";
 import { AdminWallets } from "@/pages/dashboard/admin/admin-wallets";

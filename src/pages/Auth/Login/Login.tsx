@@ -242,7 +242,7 @@ export function Login() {
                       variant='link'
                       className='p-0 h-auto text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 font-semibold'
                     >
-                      Sign in here
+                      Sign up here
                     </Button>
                   </Link>
                 </p>

@@ -39,10 +39,14 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGetUserInfoQuery } from "@/redux/features/user/userApi";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hook";
+import { baseApi } from "@/redux/baseApi";
 
 export default function Navbar() {
   const { data } = useGetUserInfoQuery(undefined);
-  
+  const dispatch = useAppDispatch();
+
   const [logout] = useLogoutMutation();
 
   const user = data?.data;
@@ -78,7 +82,12 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await logout(undefined).unwrap();
-      // optionally show toast or redirect
+      toast.success("LogOut Success");
+
+      // Invalidate all cached queries
+      dispatch(baseApi.util.resetApiState());
+      // Reload page to refresh all hooks/queries
+      window.location.reload();
     } catch (error) {
       console.error("Logout failed", error);
     }
