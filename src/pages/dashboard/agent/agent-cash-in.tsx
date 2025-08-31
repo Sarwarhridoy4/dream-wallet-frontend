@@ -19,6 +19,7 @@ import {
   useGetMyTransactionsQuery,
 } from "@/redux/features/transaction/transactionApi";
 import { toast } from "sonner";
+import { AgentCashInSkeleton } from "@/components/Loader/AgentCashInLoader";
 
 export function AgentCashIn() {
   // Fetch recent transactions
@@ -189,7 +190,7 @@ export function AgentCashIn() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <p className='text-muted-foreground'>Loading...</p>
+            <AgentCashInSkeleton/>
           ) : transactions.length === 0 ? (
             <p className='text-muted-foreground'>No cash-in transactions yet</p>
           ) : (
