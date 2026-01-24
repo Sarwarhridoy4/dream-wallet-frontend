@@ -56,17 +56,28 @@ const registerSchema = z.object({
   email: z.email("Please enter a valid email address"),
   phone: z
     .string()
-    .transform((val) => val.replace(/\D/g, "")) // remove all non-digit
+    .trim()
+    .transform((val) => {
+      // remove all non-digits
+      const digits = val.replace(/\D/g, "");
+
+      // normalize local format to international
+      if (digits.startsWith("01")) {
+        return "88" + digits;
+      }
+
+      return digits;
+    })
     .refine(
-      (val) => /^8801[3-9]\d{8}$|^01[3-9]\d{8}$/.test(val),
-      "Enter valid BD phone number (017XXXXXXXX or +8801XXXXXXXXX)"
+      (val) => /^8801[3-9]\d{8}$/.test(val),
+      "Enter valid BD phone number (017XXXXXXXX or +8801XXXXXXXXX)",
     ),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain uppercase, lowercase, and number"
+      "Password must contain uppercase, lowercase, and number",
     ),
   identifier: z.enum(["NID", "BIRTH_CERTIFICATE"], {
     error: "Please select an identifier type",
@@ -75,21 +86,21 @@ const registerSchema = z.object({
     .instanceof(File, { message: "Identifier image is required" })
     .refine(
       (file) => file.size <= 2 * 1024 * 1024,
-      "File must be less than 2MB"
+      "File must be less than 2MB",
     )
     .refine(
       (file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type),
-      "Only JPEG, PNG files are allowed"
+      "Only JPEG, PNG files are allowed",
     ),
   profile_picture: z
     .instanceof(File)
     .refine(
       (file) => file.size <= 2 * 1024 * 1024,
-      "File must be less than 2MB"
+      "File must be less than 2MB",
     )
     .refine(
       (file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type),
-      "Only JPEG, PNG files are allowed"
+      "Only JPEG, PNG files are allowed",
     )
     .optional()
     .or(z.literal(undefined)),
@@ -108,7 +119,7 @@ export function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [identifierPreview, setIdentifierPreview] = useState<string | null>(
-    null
+    null,
   );
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
 
@@ -135,7 +146,7 @@ export function Register() {
   };
 
   const passwordStrength = calculatePasswordStrength(
-    form.watch("password") || ""
+    form.watch("password") || "",
   );
 
   const getPasswordStrengthColor = () => {
@@ -172,7 +183,7 @@ export function Register() {
 
   const handleFileChange = (
     file: File | undefined,
-    type: "identifier" | "profile"
+    type: "identifier" | "profile",
   ) => {
     if (file) {
       const reader = new FileReader();
@@ -212,7 +223,7 @@ export function Register() {
       for (const [key, value] of formData.entries()) {
         console.log(
           `[v0] ${key}:`,
-          value instanceof File ? `File: ${value.name}` : value
+          value instanceof File ? `File: ${value.name}` : value,
         );
       }
 
@@ -222,7 +233,7 @@ export function Register() {
         toast.success(
           data.role === "AGENT"
             ? "Agent account created! Your account is pending approval."
-            : "Account created successfully! Please log in."
+            : "Account created successfully! Please log in.",
         );
       } else {
         // Fallback simulation for development
@@ -231,7 +242,7 @@ export function Register() {
         toast.success(
           data.role === "AGENT"
             ? "Agent account created! Your account is pending approval."
-            : "Account created successfully! Please log in."
+            : "Account created successfully! Please log in.",
         );
       }
     } catch (error: any) {
@@ -253,7 +264,7 @@ export function Register() {
         className='w-full max-w-md mx-auto text-center p-8'
       >
         <div className='flex items-center justify-center mb-4'>
-          <div className='p-3 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg'>
+          <div className='p-3 rounded-full bg-linear-to-br from-green-500 to-emerald-600 shadow-lg'>
             <CheckCircle2 className='w-8 h-8 text-white' />
           </div>
         </div>
@@ -268,7 +279,7 @@ export function Register() {
         {/* Manual button to login */}
         <Button
           asChild
-          className='bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700'
+          className='bg-linear-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700'
         >
           <Link to='/login'>Continue to Sign In</Link>
         </Button>
@@ -284,11 +295,11 @@ export function Register() {
         className='text-center mb-8'
       >
         <div className='flex items-center justify-center mb-4'>
-          <div className='p-3 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 shadow-lg'>
+          <div className='p-3 rounded-full bg-linear-to-br from-rose-500 to-pink-600 shadow-lg'>
             <Sparkles className='w-6 h-6 text-white' />
           </div>
         </div>
-        <h1 className='text-3xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent dark:from-rose-400 dark:to-pink-400'>
+        <h1 className='text-3xl font-bold bg-linear-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent dark:from-rose-400 dark:to-pink-400'>
           Create Your Account
         </h1>
         <p className='text-muted-foreground mt-2 text-sm sm:text-base'>
@@ -503,8 +514,8 @@ export function Register() {
                                 passwordStrength < 40
                                   ? "text-red-500"
                                   : passwordStrength < 80
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
+                                    ? "text-yellow-500"
+                                    : "text-green-500"
                               }`}
                             >
                               {getPasswordStrengthText()}
@@ -754,7 +765,7 @@ export function Register() {
               >
                 <Button
                   type='submit'
-                  className='w-full h-12 bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600 hover:from-rose-700 hover:via-rose-600 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed'
+                  className='w-full h-12 bg-linear-to-r from-rose-600 via-rose-500 to-pink-600 hover:from-rose-700 hover:via-rose-600 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed'
                   disabled={isRegistering}
                   aria-describedby='submit-description'
                 >

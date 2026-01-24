@@ -85,7 +85,7 @@ export function Login() {
         className='w-full max-w-md mx-auto text-center p-8'
       >
         <div className='flex items-center justify-center mb-4'>
-          <div className='p-3 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg'>
+          <div className='p-3 rounded-full bg-linear-to-br from-green-500 to-emerald-600 shadow-lg'>
             <CheckCircle2 className='w-8 h-8 text-white' />
           </div>
         </div>
@@ -105,11 +105,11 @@ export function Login() {
         className='text-center mb-8'
       >
         <div className='flex items-center justify-center mb-4'>
-          <div className='p-3 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 shadow-lg'>
+          <div className='p-3 rounded-full bg-linear-to-br from-rose-500 to-pink-600 shadow-lg'>
             <Sparkles className='w-6 h-6 text-white' />
           </div>
         </div>
-        <h1 className='text-3xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent dark:from-rose-400 dark:to-pink-400'>
+        <h1 className='text-3xl font-bold bg-linear-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent dark:from-rose-400 dark:to-pink-400'>
           Welcome Back
         </h1>
         <p className='text-muted-foreground mt-2 text-sm sm:text-base'>

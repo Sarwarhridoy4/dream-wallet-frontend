@@ -16,22 +16,13 @@ const axiosBaseQuery =
   > =>
   async ({ url, method = "GET", data, params, headers }) => {
     try {
-      // 🔑 Get accessToken from cookies
-      const cookieToken = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("accessToken="))
-        ?.split("=")[1];
-
       const result = await axiosInstance({
         url,
         method,
         data,
         params,
-        headers: {
-          ...(headers || {}),
-          ...(cookieToken ? { Authorization: `${cookieToken}` } : {}),
-        },
-        withCredentials: true, // important for cookie-based auth
+        headers: headers || {},
+        withCredentials: true, // Include cookies in requests
       });
 
       return { data: result.data };
