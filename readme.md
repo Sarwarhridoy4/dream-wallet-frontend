@@ -220,6 +220,9 @@ npm run dev
 [MongoDB Database]  <---->  [Cloudinary Media Storage]
 ```
 
+For a detailed architecture breakdown with Mermaid diagrams, see:
+- [System Architecture](./docs/system-architecture.md)
+
 ---
 
 ## 📸 Screenshots (Placeholders)
