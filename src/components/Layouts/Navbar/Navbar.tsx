@@ -104,7 +104,7 @@ export default function Navbar() {
 
   return (
     <header
-      className='sticky top-0 z-50 w-full border-b bg-gradient-to-r from-rose-50/95 to-pink-50/95 backdrop-blur-md dark:from-rose-950/95 dark:to-pink-950/95 supports-[backdrop-filter]:bg-background/60'
+      className='sticky top-0 z-50 w-full border-b bg-linear-to-r from-rose-50/95 to-pink-50/95 backdrop-blur-md dark:from-rose-950/95 dark:to-pink-950/95 supports-backdrop-filter:bg-background/60'
       role='banner'
     >
       <div
@@ -158,7 +158,7 @@ export default function Navbar() {
                   id='logo-btn'
                 >
                   <Logo />
-                  <span className='text-lg font-semibold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent'>
+                  <span className='text-lg font-semibold bg-linear-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent'>
                     Dream Wallet
                   </span>
                 </SheetTitle>
@@ -191,7 +191,7 @@ export default function Navbar() {
                             to={link.href}
                             className={`flex items-center gap-4 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-rose-50 dark:hover:bg-rose-900/20 focus:bg-rose-50 dark:focus:bg-rose-900/20 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 ${
                               isActive
-                                ? "bg-gradient-to-r from-rose-100 to-pink-100 dark:from-rose-900/40 dark:to-pink-900/40 text-rose-700 dark:text-rose-300 border-l-4 border-rose-500"
+                                ? "bg-linear-to-r from-rose-100 to-pink-100 dark:from-rose-900/40 dark:to-pink-900/40 text-rose-700 dark:text-rose-300 border-l-4 border-rose-500"
                                 : "text-gray-700 dark:text-gray-300"
                             }`}
                             aria-current={isActive ? "page" : undefined}
@@ -284,7 +284,7 @@ export default function Navbar() {
                               to={link.href}
                               className={`relative flex size-10 items-center justify-center rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 ${
                                 isActive
-                                  ? "bg-gradient-to-r from-rose-100 to-pink-100 dark:from-rose-900/40 dark:to-pink-900/40 text-rose-600 dark:text-rose-400 shadow-sm"
+                                  ? "bg-linear-to-r from-rose-100 to-pink-100 dark:from-rose-900/40 dark:to-pink-900/40 text-rose-600 dark:text-rose-400 shadow-sm"
                                   : "hover:bg-rose-50 dark:hover:bg-rose-900/20 text-gray-600 dark:text-gray-400 hover:text-rose-600 dark:hover:text-rose-400"
                               }`}
                               aria-current={isActive ? "page" : undefined}
@@ -293,7 +293,7 @@ export default function Navbar() {
                               <span className='sr-only'>{link.label}</span>
                               {isActive && (
                                 <motion.div
-                                  className='absolute -bottom-1 left-1/2 h-1 w-6 rounded-full bg-gradient-to-r from-rose-500 to-pink-500'
+                                  className='absolute -bottom-1 left-1/2 h-1 w-6 rounded-full bg-linear-to-r from-rose-500 to-pink-500'
                                   layoutId='activeTab'
                                   initial={false}
                                   transition={{
@@ -347,8 +347,7 @@ export default function Navbar() {
 
               <Button
                 size='sm'
-                className='bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2'
-                asChild
+                className='bg-linear-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2'
               >
                 Log Out
               </Button>
