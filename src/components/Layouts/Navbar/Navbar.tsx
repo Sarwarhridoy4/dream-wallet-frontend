@@ -344,13 +344,6 @@ export default function Navbar() {
               >
                 <Link to='/signup'>Get Started</Link>
               </Button>
-
-              <Button
-                size='sm'
-                className='bg-linear-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2'
-              >
-                Log Out
-              </Button>
             </div>
           )}
         </div>
